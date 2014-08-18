@@ -20,6 +20,11 @@ Afterwards you can change into any of the subfolders to build the projects you a
 
 You can get tweets using a twitter client, such as https://github.com/twitter/hbc
 
+You can build the map reduce job or the spark streaming job using the following command in the corresponding subfolders:
+
+gradle clean build
+
+You do not need to build the tweet-server - it is a simple Linux shell script.
 
 Running the applications
 =================
