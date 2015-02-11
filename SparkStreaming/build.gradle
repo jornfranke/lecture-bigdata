@@ -19,9 +19,9 @@ repositories {
 
 dependencies {
  	// spark-core
-    compile("org.apache.spark:spark-core_2.10:1.0.0")
+    compile("org.apache.spark:spark-core_2.10:1.2.0")
  	// spark-streaming 
- 	compile("org.apache.spark:spark-streaming_2.10:1.0.0")
+ 	compile("org.apache.spark:spark-streaming_2.10:1.2.0")
     // json library for tweets
     compile("com.google.code.gson:gson:2.2.4")
  	 
