@@ -17,11 +17,23 @@ repositories {
     mavenCentral()
 }
 
+
+configurations {
+	provided
+}
+
+sourceSets {
+    main.compileClasspath += configurations.provided
+    test.compileClasspath += configurations.provided
+    test.runtimeClasspath += configurations.provided
+}
+
+
 dependencies {
  	// spark-core
-    compile("org.apache.spark:spark-core_2.10:1.4.0")
+    provided("org.apache.spark:spark-core_2.11:1.5.2")
  	// spark-streaming 
- 	compile("org.apache.spark:spark-streaming_2.10:1.4.0")
+ 	provided("org.apache.spark:spark-streaming_2.11:1.5.2")
     // json library for tweets
     compile("com.google.code.gson:gson:2.2.4")
  	 
