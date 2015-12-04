@@ -9,11 +9,8 @@ import java.util.*;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.*;
 import org.apache.hadoop.io.*;
-import org.apache.hadoop.mapreduce.*;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.mapred.*;
+import org.apache.hadoop.util.*;
 import org.university.tutorial.mapreduce.tasks.TweetMap;
 import org.university.tutorial.mapreduce.tasks.TweetReduce;
       
@@ -22,28 +19,26 @@ import org.university.tutorial.mapreduce.tasks.TweetReduce;
 *
 */
 
-public class TweetDriver {
+public class TweetDriver  {
 
        
         
  public static void main(String[] args) throws Exception {
-    Configuration conf = new Configuration();
+    JobConf conf = new JobConf(TweetDriver.class);
+    conf.setJobName("example-hadoop-job");
+    conf.setOutputKeyClass(Text.class);
+    conf.setOutputValueClass(IntWritable.class);
         
-        Job job = new Job(conf, "example-hadoop-job");
-    job.setJarByClass(TweetDriver.class);
-    job.setOutputKeyClass(Text.class);
-    job.setOutputValueClass(IntWritable.class);
+    conf.setMapperClass(TweetMap.class);
+    conf.setReducerClass(TweetReduce.class);
         
-    job.setMapperClass(TweetMap.class);
-    job.setReducerClass(TweetReduce.class);
+    conf.setInputFormat(TextInputFormat.class);
+    conf.setOutputFormat(TextOutputFormat.class);
         
-    job.setInputFormatClass(TextInputFormat.class);
-    job.setOutputFormatClass(TextOutputFormat.class);
+    FileInputFormat.addInputPath(conf, new Path(args[0]));
+    FileOutputFormat.setOutputPath(conf, new Path(args[1]));
         
-    FileInputFormat.addInputPath(job, new Path(args[0]));
-    FileOutputFormat.setOutputPath(job, new Path(args[1]));
-        
-    job.waitForCompletion(true);
+    JobClient.runJob(conf);
  }
         
 }

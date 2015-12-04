@@ -8,19 +8,19 @@ package org.university.tutorial.mapreduce.tasks;
 *
 */
 import java.io.IOException;
-import org.apache.hadoop.mapreduce.*;
+import org.apache.hadoop.mapred.*;
 import org.apache.hadoop.io.*;
 import java.util.*;
 
-public class TweetReduce extends Reducer<Text, IntWritable, Text, IntWritable> {
+public class TweetReduce extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable> {
 
-   public void reduce(Text key, Iterable<IntWritable> values, Context context)
-     throws IOException, InterruptedException {
+   public void reduce(Text key, Iterator<IntWritable> values, OutputCollector<Text, IntWritable> output, Reporter reporter)
+     throws IOException {
        int sum = 0;
-       for (IntWritable val : values) {
-           sum += val.get();
+       while (values.hasNext()) {
+           sum += values.next().get();
        }
-       context.write(key, new IntWritable(sum));
+       output.collect(key, new IntWritable(sum));
    }
 }
 
